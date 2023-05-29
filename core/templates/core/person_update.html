@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% if request.user.is_superuser %}
+    {% block title %} {{ title }} {% endblock %}
+    {% block content %}
+        <h1>Обновление информации о личности {{ person.name.title }} {{ person.surname.title }} {{ person.patronymic.title }}</h1>
+        <form action="{% url 'core:person_update' pk=person.pk %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success" type="submit">Обновить</button>
+            <a class="btn btn-secondary" href="{% url 'core:persons' %}" role="button">Вернуться</a>
+        </form>
+    {% endblock %}
+{% endif %}

@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% block title %} {{ title }} {% endblock %}<
+{% block content %}
+    <a class="btn btn-primary" href="{% url 'core:publications' %}" role="button">Публикации</a>
+    <h1>Список исторических личностей</h1>
+    <form method="GET">
+        {{ filter.form.as_p }}
+        <button class="btn btn-warning btn-sm" type="submit" role="button">Поиск</button>
+        <a class="btn btn-secondary btn-sm" href="{% url 'core:persons' %}" role="button">Сброс</a>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID исторической личности</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Годы жизни</th>
+            <th scope="col">Дата добавления</th>
+            <th scope="col">Дата обновления</th>
+            <th scope="col">Подробнее</th>
+            {% if request.user.is_superuser %}
+                <th scope="col">Обновление</th>
+                <th scope="col">Удаление</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% for person in persons %}
+            <tbody>
+            <tr>
+                <td>{{ person.pk }}</td>
+                <td>{{ person.name.title }}</td>
+                <td>{{ person.surname.title }}</td>
+                <td>{{ person.patronymic.title }}</td>
+                <td>{{ person.birthday }} - {{ person.deathday }}</td>
+                <td>{{ person.time_publish|date:"d-m-Y H:i:s" }}</td>
+                <td>{{ person.time_update|date:"d-m-Y H:i:s" }}</td>
+                <td><a href="{% url 'core:person_detail' person.pk %}" role="button">Подробнее</a></td>
+                {% if request.user.is_superuser %}
+                    <td><a href="{% url 'core:person_update' person.pk %}" role="button">Обновление информации</a></td>
+                    <td><a href="{% url 'core:person_delete' person.pk %}" role="button">Удаление</a>
+                    </td>
+                {% endif %}
+            </tr>
+            </tbody>
+        {% empty %}
+            <h3>Список пуст</h3>
+        {% endfor %}
+    </table>
+    {% if request.user.is_superuser %}
+        <a class="btn btn-primary" href="{% url 'core:person_create' %}" role="button">Добавление новой личности</a>
+    {% endif %}
+{% endblock %}

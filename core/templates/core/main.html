@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block title %} Главная {% endblock %}<
+{% block content %}
+    <h1>Добро пожаловать (админу всё достуно (имя - admin, пароль - 1234))</h1>
+    <ul>
+        <li><h3><a href="{% url 'core:publications' %}" role="button">Публикации</a></h3></li>
+        {% if request.user.is_superuser %}
+            <li><h3><a href="{% url 'core:publication_create' %}" role="button">Создание публикации</a></h3></li>
+            <li><h3><a href="{% url 'core:person_create' %}" role="button">Добавление личности</a></h3></li>
+        {% endif %}
+    </ul>
+{% endblock %}
