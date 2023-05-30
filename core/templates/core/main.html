@@ -1,12 +1,19 @@
 {% extends 'core/base.html' %}
 {% block title %} Главная {% endblock %}<
 {% block content %}
-    <h1>Добро пожаловать (админу всё достуно (имя - admin, пароль - 1234))</h1>
+    <h1>Добро пожаловать {{user.username}} на сайт финального проекта</h1>
     <ul>
-        <li><h3><a href="{% url 'core:publications' %}" role="button">Публикации</a></h3></li>
+    {% if request.user.is_authenticated %}
+                <li><h3><a href="{% url 'core:publications' %}" role="button">Публикации</a></h3></li>
+        <li><h3><a href="{% url 'core:persons' %}" role="button">Исторические личности</a></h3></li>
         {% if request.user.is_superuser %}
             <li><h3><a href="{% url 'core:publication_create' %}" role="button">Создание публикации</a></h3></li>
             <li><h3><a href="{% url 'core:person_create' %}" role="button">Добавление личности</a></h3></li>
         {% endif %}
+        <li><h3><a href="{% url 'core:logout' %}" role="button">Выйти</a></h3></li>
+    {% else %}
+        <li class="last-related"><h3><a href="{% url 'core:login' %}" role="button">Войти</a> | <a
+                href="{% url 'core:register' %}" role="button">Зарегистрироваться</a></h3></li>
+    {% endif %}
     </ul>
 {% endblock %}

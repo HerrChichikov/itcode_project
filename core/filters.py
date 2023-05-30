@@ -5,7 +5,7 @@ from core import models
 class PublicationSearch(filters.FilterSet):
     class Meta:
         model = models.Publication
-        fields = ['title', 'person', ]
+        fields = ['title', 'person', 'theme', 'category', ]
 
 
 class PersonSearch(filters.FilterSet):

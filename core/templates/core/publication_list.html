@@ -1,54 +1,62 @@
 {% extends 'core/base.html' %}
-{% block title %} {{ title }} {% endblock %}<
+{% block title %} {{ title }} {% endblock %}
 {% block content %}
-    <a class="btn btn-primary" href="{% url 'core:persons' %}" role="button">Исторические личности</a>
-    <h1>Список публикаций</h1>
-    <form method="GET">
-        {{ filter.form.as_p }}
-        <button class="btn btn-warning btn-sm" type="submit" role="button">Поиск</button>
-        <a class="btn btn-secondary btn-sm" href="{% url 'core:publications' %}" role="button">Сброс</a>
-    </form>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">ID публикации</th>
-            <th scope="col">Заголовок</th>
-            <th scope="col">Тема</th>
-            <th scope="col">Категория</th>
-            <th scope="col">Связанные личности</th>
-            <th scope="col">Год</th>
-            <th scope="col">Дата добавления</th>
-            <th scope="col">Дата обновления</th>
-            <th scope="col">Подробнее</th>
-            {% if request.user.is_superuser %}
-                <th scope="col">Обновление</th>
-                <th scope="col">Удаление</th>
-            {% endif %}
-        </tr>
-        </thead>
-        {% for publication in publications %}
-            <tbody>
+    {% if request.user.is_authenticated %}
+        <h1>Публикации</h1>
+        <form method="GET">
+            {{ filter.form.as_p }}
+            <button class="btn btn-warning btn-sm" type="submit" role="button">Поиск</button>
+            <a class="btn btn-secondary btn-sm" href="{% url 'core:publications' %}" role="button">Сброс</a>
+        </form>
+        <table class="table">
+            <thead>
             <tr>
-                <td>{{ publication.pk }}</td>
-                <td>{{ publication.title.title }}</td>
-                <td>{{ publication.theme.title }}</td>
-                <td>{{ publication.category.title }}</td>
-                <td>{{ publication.year_start }} - {{ publication.year_end }}</td>
-                <td>{{ publication.time_publish|date:"d-m-Y H:i:s" }}</td>
-                <td>{{ publication.time_update|date:"d-m-Y H:i:s" }}</td>
-                <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button">Подробнее</a></td>
+                <th scope="col">ID публикации</th>
+                <th scope="col">Заголовок</th>
+                <th scope="col">Тема</th>
+                <th scope="col">Категория</th>
+                <th scope="col">Связанные личности</th>
+                <th scope="col">Год</th>
+                <th scope="col">Дата добавления</th>
+                <th scope="col">Дата обновления</th>
+                <th scope="col">Подробнее</th>
                 {% if request.user.is_superuser %}
-                    <td><a href="{% url 'core:publication_update' publication.pk %}" role="button">Обновление информации</a></td>
-                    <td><a href="{% url 'core:publication_delete' publication.pk %}" role="button">Удаление</a>
-                    </td>
+                    <th scope="col">Обновление</th>
+                    <th scope="col">Удаление</th>
                 {% endif %}
             </tr>
-            </tbody>
-        {% empty %}
-            <h3>Список пуст</h3>
-        {% endfor %}
-    </table>
-    {% if request.user.is_superuser %}
-        <a class="btn btn-primary" href="{% url 'core:publication_create' %}" role="button">Добавление новой публикации</a>
+            </thead>
+            {% for publication in publications %}
+                <tbody>
+                <tr>
+                    <td>{{ publication.pk }}</td>
+                    <td>{{ publication.title.title }}</td>
+                    <td>{{ publication.theme.name.title }}</td>
+                    <td>{{ publication.category.name.title }}</td>
+                    {% for person in publication.person.all %}
+                        <td>{{ person }}</td>
+                    {% empty %}
+                        <h2>Связанных личностей нет</h2>
+                    {% endfor %}
+                    <td>{{ publication.year_start }} - {{ publication.year_end }}</td>
+                    <td>{{ publication.time_publish|date:"d-m-Y H:i:s" }}</td>
+                    <td>{{ publication.time_update|date:"d-m-Y H:i:s" }}</td>
+                    <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button">Подробнее</a></td>
+                    {% if request.user.is_superuser %}
+                        <td><a href="{% url 'core:publication_update' publication.pk %}" role="button">Обновление
+                            информации</a></td>
+                        <td><a href="{% url 'core:publication_delete' publication.pk %}" role="button">Удаление</a>
+                        </td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            {% empty %}
+                <h3>Список пуст</h3>
+            {% endfor %}
+        </table>
+        {% if request.user.is_superuser %}
+            <a class="btn btn-primary" href="{% url 'core:publication_create' %}" role="button">Добавление новой
+                публикации</a>
+        {% endif %}
     {% endif %}
 {% endblock %}

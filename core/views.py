@@ -1,15 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import logout
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from core import models, datatools, forms, filters
-from .datatools.index import *
+from .datatools.index import TitleMixin
 from django.shortcuts import render
 
-menu = [{'title': "О сайте", 'url_name': 'core:about'},
-        {'title': "Добавить публикацию", 'url_name': 'core:add_page'},
-        {'title': "Войти", 'url_name': 'core:login'},
-        ]
+from .forms import RegisterUserForm, LoginUserForm
 
 
 class PublicationList(TitleMixin, ListView):
@@ -112,3 +111,22 @@ class PersonDelete(TitleMixin, DeleteView):
 
 def get_main_page(request):
     return render(request=request, template_name='core/main.html')
+
+
+class RegisterUser(TitleMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'core/register.html'
+    success_url = reverse_lazy('core:main')
+
+
+class LoginUser(TitleMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'core/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('core:main')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('core:main')

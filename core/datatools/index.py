@@ -12,3 +12,5 @@ class TitleMixin:
         context = super().get_context_data(**kwargs)
         context["title"] = self.get_title()
         return context
+
+

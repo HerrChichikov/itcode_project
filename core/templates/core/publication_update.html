@@ -3,7 +3,8 @@
     {% block title %} {{ title }} {% endblock %}
     {% block content %}
         <h1>Обновление публикации "{{ publication.title }}"</h1>
-        <form action="{% url 'core:publication_update' pk=publication.pk %}" method="POST" enctype="multipart/form-data">>
+        <form action="{% url 'core:publication_update' pk=publication.pk %}" method="POST"
+              enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button class="btn btn-success" type="submit">Обновить</button>

@@ -1,14 +1,15 @@
 {% extends 'core/base.html' %}
-{% if request.user.is_superuser %}
-{% block title %} {{ title }} {% endblock %}<
+{% block title %} {{ title }} {% endblock %}
 {% block content %}
-    <h1>Информация об исторической личности: {{ person.name.title }} {{ person.surname.title }} {{ person.patronymic.title }}</h1>
+    <h1>Информация об исторической
+        личности: {{ person.name.title }} {{ person.surname.title }} {{ person.patronymic.title }}</h1>
     {% if person.photo.url != Null %}
-    <img src="{{ person.photo.url}}">
+        <img src="{{ person.photo.url }}">
     {% endif %}
-    <h3>ID: {{ person.pk }}</h3>
+    {% if request.user.is_superuser %}
+        <h3>ID: {{ person.pk }}</h3>
+    {% endif %}
     <h3>Годы жизни: {{ person.birthday }} - {{ person.deathday }}</h3>
     <h3>Биография:</h3>
-    {{person.bio|linebreaks}}
+    {{ person.bio|linebreaks }}
 {% endblock %}
-{% endif %}

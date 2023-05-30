@@ -42,7 +42,7 @@ class Person(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата обновления', null=True, )
 
     def __str__(self):
-        return f'{self.name} {self.surname}'
+        return f'{self.name} {self.patronymic} {self.surname}'
 
     # def get_absolute_url(self):
     #     return reverse('#', kwargs = {})
