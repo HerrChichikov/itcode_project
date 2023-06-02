@@ -22,12 +22,18 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Категории публикаций"
+
 
 class Themes(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название темы', )
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Темы публикаций"
 
 
 class Person(models.Model):
@@ -44,6 +50,10 @@ class Person(models.Model):
     def __str__(self):
         return f'{self.name} {self.patronymic} {self.surname}'
 
+    class Meta:
+        ordering = ["surname"]
+        verbose_name = "Историческая личность"
+
     # def get_absolute_url(self):
     #     return reverse('#', kwargs = {})
 
@@ -52,11 +62,11 @@ class Publication(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название публикации')
     content = models.TextField(verbose_name='Текст публикации', )
     theme = models.ForeignKey(Themes, on_delete=models.PROTECT, verbose_name='Тема публикации',
-                              related_name='Publication', )
+                              related_name='publication', )
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория публикации',
-                                 related_name='Publication', )
+                                 related_name='publication', )
     person = models.ManyToManyField(Person, verbose_name='Связанные личности',
-                                    related_name='Publication', )
+                                    related_name='publication', )
     year_start = models.DateField(verbose_name='Дата начала события или первого появления вещи', )
     year_end = models.DateField(verbose_name='Дата окончания события', )
     time_publish = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации', )
@@ -67,5 +77,10 @@ class Publication(models.Model):
     def __str__(self):
         return f"{self.title}"
 
+    class Meta:
+        ordering = ["-time_publish"]
+        verbose_name = "Публикация"
     # def get_absolute_url(self):
     #     return reverse('#', kwargs = {})
+
+

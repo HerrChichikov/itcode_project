@@ -30,13 +30,13 @@
                 <tbody>
                 <tr>
                     <td>{{ publication.pk }}</td>
-                    <td>{{ publication.title.title }}</td>
+                    <td>{{ publication.title }}</td>
                     <td>{{ publication.theme.name.title }}</td>
                     <td>{{ publication.category.name.title }}</td>
                     {% for person in publication.person.all %}
-                        <td>{{ person }}</td>
+                        <td><a href="{% url 'core:person_detail' person.pk %}" role="button"> {{ person }}</a></td>
                     {% empty %}
-                        <h2>Связанных личностей нет</h2>
+                        <td>Связанных личностей нет</td>
                     {% endfor %}
                     <td>{{ publication.year_start }} - {{ publication.year_end }}</td>
                     <td>{{ publication.time_publish|date:"d-m-Y H:i:s" }}</td>

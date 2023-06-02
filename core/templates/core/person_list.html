@@ -18,6 +18,7 @@
                 <th scope="col">Фамилия</th>
                 <th scope="col">Отчество</th>
                 <th scope="col">Годы жизни</th>
+                <th scope="col">Связанные статьи</th>
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Дата обновления</th>
                 <th scope="col">Подробнее</th>
@@ -37,6 +38,11 @@
                     <td>{{ person.surname.title }}</td>
                     <td>{{ person.patronymic.title }}</td>
                     <td>{{ person.birthday }} - {{ person.deathday }}</td>
+                    {% for publication in person.publication.all %}
+                        <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button"> {{ publication }}</a></td>
+                    {% empty %}
+                        <td>Связанных статей нет</td>
+                    {% endfor %}
                     <td>{{ person.time_publish|date:"d-m-Y H:i:s" }}</td>
                     <td>{{ person.time_update|date:"d-m-Y H:i:s" }}</td>
                     <td><a href="{% url 'core:person_detail' person.pk %}" role="button">Подробнее</a></td>

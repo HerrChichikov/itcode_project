@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from core import models
@@ -22,8 +22,8 @@ class PublicationForm(forms.ModelForm):
 
     class Meta:
         model = models.Publication
-        fields = ['title', 'content', 'theme', 'category', 'person', 'year_start', 'year_end', 'photo',
-                  'is_published', ]
+        fields = ('title', 'content', 'theme', 'category', 'person', 'year_start', 'year_end', 'photo',
+                  'is_published', )
 
 
 class PersonForm(forms.ModelForm):
@@ -55,18 +55,23 @@ class PersonForm(forms.ModelForm):
 
     class Meta:
         model = models.Person
-        fields = ['name', 'surname', 'patronymic', 'birthday', 'deathday', 'photo', 'bio', ]
+        fields = ('name', 'surname', 'patronymic', 'birthday', 'deathday', 'photo', 'bio', )
 
 
 class RegisterUserForm(UserCreationForm):
-    # username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    # email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-input'}))
-    # password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    # password2 = forms.CharField(label='Повтор пароля', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class UserUpdateForm(UserChangeForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    email = forms.EmailField(label='Почта', widget=forms.EmailInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(label='Пароль', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))

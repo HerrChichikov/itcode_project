@@ -7,8 +7,8 @@
             <img src="{{ publication.photo.url }}">
         {% endif %}
         <h3>ID: {{ publication.pk }}</h3>
-        <h3>Тема публикации: {{ publication.theme.title }}</h3>
-        <h3>Категория публикации: {{ publication.category.title }}</h3>
+        <h3>Тема публикации: {{ publication.theme.name.title }}</h3>
+        <h3>Категория публикации: {{ publication.category.name.title }}</h3>
         <h3>Год: {{ publication.year_start }} {{ publication.year_end }}</h3>
         <h3>Описание:</h3>
         {{ publication.content|linebreaks }}
