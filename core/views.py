@@ -5,10 +5,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from core import models, datatools, forms, filters
-from .datatools.index import TitleMixin
+from core.datatools.index import TitleMixin
 from django.shortcuts import render
 
-from .forms import RegisterUserForm, LoginUserForm
+from core.forms import RegisterUserForm, LoginUserForm, UserUpdateForm
 
 
 class PublicationList(TitleMixin, ListView):
@@ -114,17 +114,28 @@ def get_main_page(request):
 
 
 class RegisterUser(TitleMixin, CreateView):
+    title = 'Регистрация'
     form_class = RegisterUserForm
     template_name = 'core/register.html'
     success_url = reverse_lazy('core:main')
 
 
 class LoginUser(TitleMixin, LoginView):
+    title = 'Авторизация'
     form_class = LoginUserForm
     template_name = 'core/login.html'
 
     def get_success_url(self):
         return reverse_lazy('core:main')
+
+class UserUpdate(TitleMixin, UpdateView):
+    title = 'Профиль'
+    form_class = UserUpdateForm
+    template_name = 'core/user_update.html'
+    success_url = reverse_lazy('core:user_update')
+
+    def get_object(self):
+        return self.request.user
 
 
 def logout_user(request):
