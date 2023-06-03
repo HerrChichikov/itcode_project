@@ -1,4 +1,4 @@
-media
-venv
-media
+.idea/
 config.ini
+venv/
+media/

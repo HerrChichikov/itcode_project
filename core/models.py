@@ -1,19 +1,5 @@
+from django.contrib.auth.models import User
 from django.db import models
-
-CATEGORIES = (
-
-    ('Статья', 'Статья'),
-    ('Факт', 'Факт'),
-    ('Юмор', 'Юмор'),
-
-)
-
-THEMES = (
-
-    ('Событие', 'Событие'),
-    ('Вещь', 'Вещь'),
-
-)
 
 
 class Categories(models.Model):
@@ -84,3 +70,16 @@ class Publication(models.Model):
     #     return reverse('#', kwargs = {})
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name='Пользователь')
+    nickname = models.CharField(max_length=255, verbose_name='Никнейм профиля', blank=True, )
+    status = models.TextField(verbose_name='Статус профиля', blank=True, )
+    profile_photo = models.ImageField(upload_to='photos/profile_pic/%Y/%m/%d/', verbose_name='Фото профиля', blank=True, null=True, )
+
+    def __str__(self):
+        return f"{self.nickname}"
+
+    class Meta:
+        verbose_name = "Профиль"
+    # def get_absolute_url(self):
+    #     return reverse('#', kwargs = {})

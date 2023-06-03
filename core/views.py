@@ -8,7 +8,6 @@ from core import models, datatools, forms, filters
 from core.datatools.index import TitleMixin
 from django.shortcuts import render
 
-from core.forms import RegisterUserForm, LoginUserForm, UserUpdateForm
 
 
 class PublicationList(TitleMixin, ListView):
@@ -115,28 +114,58 @@ def get_main_page(request):
 
 class RegisterUser(TitleMixin, CreateView):
     title = 'Регистрация'
-    form_class = RegisterUserForm
+    form_class = forms.RegisterUserForm
     template_name = 'core/register.html'
     success_url = reverse_lazy('core:main')
 
 
 class LoginUser(TitleMixin, LoginView):
     title = 'Авторизация'
-    form_class = LoginUserForm
+    form_class = forms.LoginUserForm
     template_name = 'core/login.html'
 
     def get_success_url(self):
         return reverse_lazy('core:main')
 
+
 class UserUpdate(TitleMixin, UpdateView):
-    title = 'Профиль'
-    form_class = UserUpdateForm
+    title = 'Настройки'
+    form_class = forms.UserUpdateForm
     template_name = 'core/user_update.html'
     success_url = reverse_lazy('core:user_update')
 
     def get_object(self):
         return self.request.user
 
+
+class ProfileDetail(TitleMixin, DetailView):
+    model = models.Profile
+    template_name = 'core/user_profile.html'
+    context_object_name = 'profile'
+    title = 'Профиль'
+
+
+class ProfileUpdate(TitleMixin, UpdateView):
+    model = models.Profile.profile_photo
+    title = 'Изменение профиля'
+    form_class = forms.UserUpdateProfileForm
+    template_name = 'core/user_profile_update.html'
+    success_url = reverse_lazy('core:user_profile_update')
+
+    def get_object(self):
+        return self.request.user.profile
+
+
+class ProfileCreate(TitleMixin, CreateView):
+    models = models.Profile
+    title = 'Создание профиля'
+    form_class = forms.UserCreateProfileForm
+    template_name = 'core/user_profile_create.html'
+    success_url = reverse_lazy('core:user_profile_update')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 def logout_user(request):
     logout(request)

@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    <h1>Профиль "{{ profile.nickname }}"</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if profile.profile_photo.url  != Null %}
+            <img src="{{ profile.profile_photo.url }}" class="img-thumbnail" style="width:15%">
+        {% else %}
+            <img src="{% static 'core/images/emptyAvatar.large.jpg' %}" class="img-thumbnail">
+        {% endif %}
+
+        <p><label class="form-label">{{ form.nickname.label }}: </label>{{ form.nickname }}</p>
+        <div class="form-error">{{ form.nickname.errors }}</div>
+
+        <p><label class="form-label">{{ form.profile_photo.label }}: </label>{{ form.profile_photo }}</p>
+        <div class="form-error">{{ form.profile_photo.errors }}</div>
+
+        <p><label class="form-label">{{ form.status.label }}: </label>{{ form.status }}</p>
+        <div class="form-error">{{ form.status.errors }}</div>
+
+        <button class="btn btn-success" type="submit">Обновить данные</button>
+        <a class="btn btn-secondary" href="{% url 'core:main' %}" role="button">Вернуться на главную</a>
+    </form>
+{% endblock %}

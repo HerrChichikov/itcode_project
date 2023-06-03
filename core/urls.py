@@ -21,5 +21,8 @@ urlpatterns = [
     path('register/', views.RegisterUser.as_view(), name='register'),
     path('login/', views.LoginUser.as_view(), name='login'),
     path('user_update/', views.UserUpdate.as_view(), name='user_update'),
+    path('user_profile/<int:pk>', views.ProfileDetail.as_view(), name='user_profile'),
+    path('user_profile_create', views.ProfileCreate.as_view(), name='user_profile_create'),
+    path('user_profile_update', views.ProfileUpdate.as_view(), name='user_profile_update'),
     path('logout/', views.logout_user, name='logout'),
 ]
