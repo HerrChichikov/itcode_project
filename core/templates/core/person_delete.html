@@ -3,7 +3,7 @@
     {% block title %} {{ title }} {% endblock %}
     {% block content %}
         <h1>Удалить личность {{ person.name.title }} {{ person.surname.title }}?</h1>
-        <form action="{% url 'core:person_delete' pk=user.pk %}" method="POST">
+        <form action="{% url 'core:person_delete' pk=person.pk %}" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <button class="btn btn-danger" type="submit">Удалить</button>

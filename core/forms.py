@@ -24,6 +24,7 @@ class PublicationForm(forms.ModelForm):
         model = models.Publication
         fields = ('title', 'content', 'theme', 'category', 'person', 'year_start', 'year_end', 'photo',
                   'is_published',)
+        # fields = "__all__"
 
 
 class PersonForm(forms.ModelForm):

@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
     {% if request.user.is_authenticated %}
@@ -12,7 +13,9 @@
             <thead>
             <tr>
                 <th scope="col">ID публикации</th>
+                <th scope="col">Изображение</th>
                 <th scope="col">Заголовок</th>
+                <th scope="col">Автор</th>
                 <th scope="col">Тема</th>
                 <th scope="col">Категория</th>
                 <th scope="col">Связанные личности</th>
@@ -30,7 +33,15 @@
                 <tbody>
                 <tr>
                     <td>{{ publication.pk }}</td>
+                    {% if publication.photo.url != Null %}
+                        <td><img src="{{ publication.photo.url }}" class="img-thumbnail" width="200" height="200">
+                        </td>
+                    {% else %}
+                        <td><img src="{% static 'core/images/findphoto.png' %}" width="200" height="200"></td>
+                    {% endif %}
                     <td>{{ publication.title }}</td>
+                    <td><a href="{% url 'core:user_profile' publication.author.pk %}"
+                           role="button"> {{ publication.author }}</a></td>
                     <td>{{ publication.theme.name.title }}</td>
                     <td>{{ publication.category.name.title }}</td>
                     {% for person in publication.person.all %}

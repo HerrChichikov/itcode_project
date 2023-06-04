@@ -3,7 +3,7 @@
     {% block title %} {{ title }} {% endblock %}<
     {% block content %}
         <h1>Удалить публикацию "{{ publication.title }}"?</h1>
-        <form action="{% url 'core:person_delete' pk=publication.pk %}" method="POST">
+        <form action="{% url 'core:publication_delete' pk=publication.pk %}" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <button class="btn btn-danger" type="submit">Удалить публикацию</button>

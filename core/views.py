@@ -9,7 +9,6 @@ from core.datatools.index import TitleMixin
 from django.shortcuts import render
 
 
-
 class PublicationList(TitleMixin, ListView):
     model = models.Publication
     template_name = 'core/publication_list.html'
@@ -41,6 +40,10 @@ class PublicationCreate(TitleMixin, CreateView):
     form_class = forms.PublicationForm
     title = 'Создание публикации'
     success_url = reverse_lazy('core:publications')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user.profile
+        return super().form_valid(form)
 
 
 class PublicationUpdate(TitleMixin, UpdateView):
@@ -91,6 +94,9 @@ class PersonCreate(TitleMixin, CreateView):
     title = 'Добавление личности'
     success_url = reverse_lazy('core:persons')
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user.profile
+        return super().form_valid(form)
 
 class PersonUpdate(TitleMixin, UpdateView):
     model = models.Person
@@ -146,7 +152,7 @@ class ProfileDetail(TitleMixin, DetailView):
 
 
 class ProfileUpdate(TitleMixin, UpdateView):
-    model = models.Profile.profile_photo
+    model = models.Profile
     title = 'Изменение профиля'
     form_class = forms.UserUpdateProfileForm
     template_name = 'core/user_profile_update.html'
@@ -184,6 +190,7 @@ class ProfileList(TitleMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = self.get_filters()
         return context
+
 
 def logout_user(request):
     logout(request)

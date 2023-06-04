@@ -32,6 +32,8 @@ class Person(models.Model):
     bio = models.TextField(verbose_name='Текст публикации', blank=True, )
     time_publish = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации', null=True, )
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата обновления', null=True, )
+    author = models.ForeignKey("Profile", on_delete=models.CASCADE, verbose_name='Автор личности',
+                              related_name='person_profiles', null=True)
 
     def __str__(self):
         return f'{self.name} {self.patronymic} {self.surname}'
@@ -48,16 +50,18 @@ class Publication(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название публикации')
     content = models.TextField(verbose_name='Текст публикации', )
     theme = models.ForeignKey(Themes, on_delete=models.PROTECT, verbose_name='Тема публикации',
-                              related_name='publication', )
+                              related_name='publications', )
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория публикации',
-                                 related_name='publication', )
+                                 related_name='categories', )
     person = models.ManyToManyField(Person, verbose_name='Связанные личности',
-                                    related_name='publication', blank=True, )
+                                    related_name='persons', blank=True, )
     year_start = models.DateField(verbose_name='Дата начала события или первого появления вещи', )
     year_end = models.DateField(verbose_name='Дата окончания события', )
     time_publish = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации', )
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата обновления', )
     photo = models.ImageField(upload_to='photos/%Y/%m/%d/', verbose_name='Фото события или вещи', blank=True, )
+    author = models.ForeignKey("Profile", on_delete=models.CASCADE, verbose_name='Автор публикации',
+                              related_name='publication_profiles', null=True)
     is_published = models.BooleanField(default=True, )
 
     def __str__(self):

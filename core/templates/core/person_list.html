@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %} {{ title }} {% endblock %}<
 {% block content %}
     {% if request.user.is_authenticated %}
@@ -14,10 +15,12 @@
                 {% if request.user.is_superuser %}
                     <th scope="col">ID исторической личности</th>
                 {% endif %}
+                <th scope="col">Изображение</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Отчество</th>
                 <th scope="col">Годы жизни</th>
+                <th scope="col">Автор</th>
                 <th scope="col">Связанные статьи</th>
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Дата обновления</th>
@@ -32,15 +35,35 @@
                 <tbody>
                 <tr>
                     <td>{{ person.pk }}</td>
+                    {% if person.photo.url != Null %}
+                        <td><img src="{{ person.photo.url }}" class="img-thumbnail" width="200" height="200">
+                        </td>
+                    {% else %}
+                        <td><img src="{% static 'core/images/findphoto.png' %}" width="200" height="200"></td>
+                    {% endif %}
                     <td>{{ person.name.title }}</td>
                     <td>{{ person.surname.title }}</td>
                     <td>{{ person.patronymic.title }}</td>
                     <td>{{ person.birthday }} - {{ person.deathday }}</td>
-                    {% for publication in person.publication.all %}
-                        <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button"> {{ publication }}</a></td>
+{##}
+                    <td><a href="{% url 'core:user_profile' person.author.pk %}"
+                           role="button"> {{ person.author }}</a></td>
+
+
+{#                                 {% for person in publication.person.all %}#}
+{#                        <td><a href="{% url 'core:person_detail' person.pk %}" role="button"> {{ person }}</a></td>#}
+{#                    {% empty %}#}
+{#                        <td>Связанных личностей нет</td>#}
+{#                    {% endfor %}#}
+
+
+                   <td> {% for publication in person.persons.all %}
+                        <ul><li><a href="{% url 'core:publication_detail' publication.pk %}"
+                               role="button"> {{ publication }}</a></li></ul>
                     {% empty %}
-                        <td>Связанных статей нет</td>
-                    {% endfor %}
+                        Связанных статей нет
+                    {% endfor %}</td>
+
                     <td>{{ person.time_publish|date:"d-m-Y H:i:s" }}</td>
                     <td>{{ person.time_update|date:"d-m-Y H:i:s" }}</td>
                     <td><a href="{% url 'core:person_detail' person.pk %}" role="button">Подробнее</a></td>
