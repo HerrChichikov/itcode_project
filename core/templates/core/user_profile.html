@@ -5,17 +5,19 @@
     <h1>Пользователь"{{ profile.nickname }}"</h1>
 
     {% if profile.profile_photo.url != Null %}
-        <img src="{{ profile.profile_photo.url }} " class="img-thumbnail" style="width:15%">
+        <img src="{{ profile.profile_photo.url }} " class="img-thumbnail" width="300" height="300">
     {% else %}
-        <img src="{% static 'core/images/emptyAvatar.large.jpg' %}">
+        <img src="{% static 'core/images/emptyAvatar.large.jpg' %}" width="300" height="300">
     {% endif %}
 
 
 
 
     <h3>ID: {{ profile.pk }}</h3>
-    {% if user.is_superuser %}
+    {% if profile.user.is_superuser %}
         <h3>Права: Админ</h3>
+    {% elif profile.user.is_staff %}
+        <h3>Права: Автор</h3>
     {% else %}
         <h3>Права: ReadOnly</h3>
     {% endif %}

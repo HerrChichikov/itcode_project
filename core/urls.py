@@ -24,5 +24,6 @@ urlpatterns = [
     path('user_profile/<int:pk>', views.ProfileDetail.as_view(), name='user_profile'),
     path('user_profile_create', views.ProfileCreate.as_view(), name='user_profile_create'),
     path('user_profile_update', views.ProfileUpdate.as_view(), name='user_profile_update'),
+    path('profiles/', views.ProfileList.as_view(), name='profiles'),
     path('logout/', views.logout_user, name='logout'),
 ]

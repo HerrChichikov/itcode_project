@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %} {{ title }} {% endblock %}<
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h1>Список пользователей</h1>
+        <form method="GET">
+            {{ filter.form.as_p }}
+            <button class="btn btn-warning btn-sm" type="submit" role="button">Поиск</button>
+            <a class="btn btn-secondary btn-sm" href="{% url 'core:profiles' %}" role="button">Сброс</a>
+        </form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Аватарка</th>
+                <th scope="col">Никнейм</th>
+                <th scope="col">Роль</th>
+                {#                <th scope="col">Кол-во постов</th>#}
+                <th scope="col">Подробнее</th>
+                {% if request.user.is_superuser %}
+                    <th scope="col">Дать статус автора</th>
+                    <th scope="col">БАН</th>
+                {% endif %}
+            </tr>
+            </thead>
+            {% for profile in profiles %}
+                <tbody>
+                <tr>
+                    <td>{{ profile.pk }}</td>
+                    {% if profile.profile_photo.url != Null %}
+                        <td><img src="{{ profile.profile_photo.url }}" class="img-thumbnail" width="200" height="200">
+                        </td>
+                    {% else %}
+                        <td><img src="{% static 'core/images/emptyAvatar.large.jpg' %}" width="200" height="200"></td>
+                    {% endif %}
+                    <td>{{ profile.nickname.title }}</td>
+                    {% if profile.user.is_superuser %}
+                        <td>Админ</td>
+                    {% elif profile.user.is_staff %}
+                        <td>Автор</td>
+                    {% else %}
+                        <td>ReadOnly</td>
+                    {% endif %}
+                    {#                    {% for publication in person.publication.all %}#}
+                    {#                        <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button"> {{ publication }}</a></td>#}
+                    {#                    {% empty %}#}
+                    {#                        <td>Связанных статей нет</td>#}
+                    {#                    {% endfor %}#}
+                    <td><a href="{% url 'core:user_profile' profile.pk %}" role="button">Подробнее</a></td>
+                    {% if request.user.is_superuser %}
+                        <td><a href="{% url 'core:profiles' %}" role="button">Дать статус автора</a>
+                        </td>
+                        <td><a href="{% url 'core:profiles' %}" role="button">БАН</a>
+                        </td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            {% empty %}
+                <h3>Мы тут одни...</h3>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

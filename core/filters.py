@@ -12,3 +12,9 @@ class PersonSearch(filters.FilterSet):
     class Meta:
         model = models.Person
         fields = ('name', 'surname', 'patronymic', )
+
+
+class ProfileSearch(filters.FilterSet):
+    class Meta:
+        model = models.Profile
+        fields = ('nickname', )

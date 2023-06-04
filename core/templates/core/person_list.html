@@ -31,9 +31,7 @@
             {% for person in persons %}
                 <tbody>
                 <tr>
-                    {% if request.user.is_superuser %}
-                        <td>{{ person.pk }}</td>
-                    {% endif %}
+                    <td>{{ person.pk }}</td>
                     <td>{{ person.name.title }}</td>
                     <td>{{ person.surname.title }}</td>
                     <td>{{ person.patronymic.title }}</td>

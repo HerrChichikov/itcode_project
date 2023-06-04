@@ -1,10 +1,13 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% if request.user.is_superuser %}
     {% block title %} {{ title }} {% endblock %}
     {% block content %}
         <h1>"{{ publication.title }}"</h1>
         {% if publication.photo.url != Null %}
-            <img src="{{ publication.photo.url }}">
+            <img src="{{ publication.photo.url }}" width="400" height="400">
+        {% else %}
+            <img src="{% static 'core/images/findphoto.png' %}" width="400" height="400">
         {% endif %}
         <h3>ID: {{ publication.pk }}</h3>
         <h3>Тема публикации: {{ publication.theme.name.title }}</h3>

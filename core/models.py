@@ -52,7 +52,7 @@ class Publication(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.PROTECT, verbose_name='Категория публикации',
                                  related_name='publication', )
     person = models.ManyToManyField(Person, verbose_name='Связанные личности',
-                                    related_name='publication', )
+                                    related_name='publication', blank=True, )
     year_start = models.DateField(verbose_name='Дата начала события или первого появления вещи', )
     year_end = models.DateField(verbose_name='Дата окончания события', )
     time_publish = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации', )

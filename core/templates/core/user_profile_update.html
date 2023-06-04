@@ -7,9 +7,9 @@
         {% csrf_token %}
 
         {% if profile.profile_photo.url  != Null %}
-            <img src="{{ profile.profile_photo.url }}" class="img-thumbnail" style="width:15%">
+            <img src="{{ profile.profile_photo.url }}" class="img-thumbnail" width="300" height="300">
         {% else %}
-            <img src="{% static 'core/images/emptyAvatar.large.jpg' %}" class="img-thumbnail">
+            <img src="{% static 'core/images/emptyAvatar.large.jpg' %}" class="img-thumbnail" width="200" height="200">
         {% endif %}
 
         <p><label class="form-label">{{ form.nickname.label }}: </label>{{ form.nickname }}</p>

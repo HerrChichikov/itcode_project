@@ -1,10 +1,13 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
     <h1>Информация об исторической
         личности: {{ person.name.title }} {{ person.surname.title }} {{ person.patronymic.title }}</h1>
     {% if person.photo.url != Null %}
-        <img src="{{ person.photo.url }}">
+        <img src="{{ person.photo.url }}" width="400" height="400">
+    {% else %}
+        <img src="{% static 'core/images/findphoto.png' %}" width="400" height="400">
     {% endif %}
     {% if request.user.is_superuser %}
         <h3>ID: {{ person.pk }}</h3>
@@ -13,3 +16,4 @@
     <h3>Биография:</h3>
     {{ person.bio|linebreaks }}
 {% endblock %}
+
