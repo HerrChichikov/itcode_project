@@ -1,17 +1,28 @@
 {% extends 'core/base.html' %}
 {% load static %}
-    {% block title %} {{ title }} {% endblock %}
-    {% block content %}
-        <h1>"{{ publication.title }}"</h1>
-        {% if publication.photo.url != Null %}
-            <img src="{{ publication.photo.url }}" width="400" height="400">
-        {% else %}
-            <img src="{% static 'core/images/findphoto.png' %}" width="400" height="400">
-        {% endif %}
-        <h3>ID: {{ publication.pk }}</h3>
-        <h3>Тема публикации: {{ publication.theme.name.title }}</h3>
-        <h3>Категория публикации: {{ publication.category.name.title }}</h3>
-        <h3>Год: {{ publication.year_start }} {{ publication.year_end }}</h3>
-        <h3>Описание:</h3>
-        {{ publication.content|linebreaks }}
-    {% endblock %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    <h1>"{{ publication.title }}"</h1>
+    {% if publication.photo.url != Null %}
+        <img src="{{ publication.photo.url }}" width="400" height="400">
+    {% else %}
+        <img src="{% static 'core/images/findphoto.png' %}" width="400" height="400">
+    {% endif %}
+    <h3>ID: {{ publication.pk }}</h3>
+    <h3>Автор: {{ publication.author }}</h3>
+    <h3>Участники:</h3>
+    {% for person in publication.person.all %}
+        <ul>
+            <li><a href="{% url 'core:person_detail' person.pk %}"
+                   role="button"> {{ person }}</a></li>
+        </ul>
+    {% empty %}
+        <h3>Связанных личностей нет</h3>
+    {% endfor %}
+
+    <h3>Тема публикации: {{ publication.theme.name.title }}</h3>
+    <h3>Категория публикации: {{ publication.category.name.title }}</h3>
+    <h3>Год: {{ publication.year_start }} {{ publication.year_end }}</h3>
+    <h3>Описание:</h3>
+    {{ publication.content|linebreaks }}
+{% endblock %}
