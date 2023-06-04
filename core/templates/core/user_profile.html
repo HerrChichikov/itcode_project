@@ -25,4 +25,16 @@
     <h3>Статус: {{ profile.status|linebreaks }}</h3>
     <h3>Почта: {{ profile.user.email }}</h3>
     <h3>Дата регистрации : {{ profile.user.date_joined }}</h3>
+
+    <h3>Написанные статьи:</h3>
+     {% for publication in profile.publication_profiles.all %}
+         <ul>
+            <li><a href="{% url 'core:publication_detail' publication.pk %}"
+                   role="button"> {{ publication }}</a></li>
+        </ul>
+    {% empty %}
+        <h3>Статей не писал</h3>
+    {% endfor %}
+
 {% endblock %}
+

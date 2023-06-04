@@ -1,4 +1,5 @@
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -98,6 +99,7 @@ class PersonCreate(TitleMixin, CreateView):
         form.instance.author = self.request.user.profile
         return super().form_valid(form)
 
+
 class PersonUpdate(TitleMixin, UpdateView):
     model = models.Person
     template_name = 'core/person_update.html'
@@ -190,6 +192,22 @@ class ProfileList(TitleMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = self.get_filters()
         return context
+
+
+class ProfileDelete(TitleMixin, DeleteView):
+    model = models.Profile
+    template_name = 'core/user_profile_delete.html'
+    fields = "__all__"
+    title = 'Удаление профиля'
+    success_url = reverse_lazy('core:profiles')
+
+
+class ProfileChangeRole(TitleMixin, UpdateView):
+    model = models.User
+    template_name = 'core/user_profile_change_role.html'
+    fields = ('is_staff', 'is_superuser', )
+    title = 'Смена прав'
+    success_url = reverse_lazy('core:profiles')
 
 
 def logout_user(request):

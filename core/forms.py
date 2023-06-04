@@ -61,6 +61,7 @@ class PersonForm(forms.ModelForm):
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
@@ -72,12 +73,13 @@ class UserUpdateForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', )
+        fields = ('email', 'password',)
 
 
 class UserUpdateProfileForm(UserChangeForm):
     nickname = forms.CharField(label='Никнейм', widget=forms.TextInput(attrs={'class': 'form-input'}))
     status = forms.CharField(label='Статус', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
     class Meta:
         model = models.Profile
         fields = ('nickname', 'profile_photo', 'status',)
@@ -86,10 +88,10 @@ class UserUpdateProfileForm(UserChangeForm):
 class UserCreateProfileForm(forms.ModelForm):
     nickname = forms.CharField(label='Никнейм', widget=forms.TextInput(attrs={'class': 'form-input'}))
     status = forms.CharField(label='Статус', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
     class Meta:
         model = models.Profile
         fields = ('nickname', 'profile_photo', 'status',)
-        # fields = "__all__"
 
 
 class LoginUserForm(AuthenticationForm):

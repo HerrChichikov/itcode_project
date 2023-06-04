@@ -75,7 +75,7 @@ class Publication(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name='Пользователь')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name='Пользователь', )
     nickname = models.CharField(max_length=255, verbose_name='Никнейм профиля', blank=True, )
     status = models.TextField(verbose_name='Статус профиля', blank=True, )
     profile_photo = models.ImageField(upload_to='photos/profile_pic/%Y/%m/%d/', verbose_name='Фото профиля', blank=True, null=True, )

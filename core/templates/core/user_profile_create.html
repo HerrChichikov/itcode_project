@@ -6,14 +6,6 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-{#        <p><label class="form-label">{{ form.nickname.label }}: </label>{{ form.nickname }}</p>#}
-{#        <div class="form-error">{{ form.nickname.errors }}</div>#}
-{##}
-{#        {{ form.photo }}#}
-{##}
-{#        <p><label class="form-label">{{ form.status.label }}: </label>{{ form.status }}</p>#}
-{#        <div class="form-error">{{ form.status.errors }}</div>#}
-
         {{ form.as_p }}
 
         <button class="btn btn-success" type="submit">Создать профиль</button>

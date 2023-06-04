@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %} {{ title }} {% endblock %}<
 {% block content %}
-    {% if request.user.is_authenticated %}
         <h1>Список исторических личностей</h1>
         <form method="GET">
             {{ filter.form.as_p }}
@@ -12,9 +11,7 @@
         <table class="table">
             <thead>
             <tr>
-                {% if request.user.is_superuser %}
-                    <th scope="col">ID исторической личности</th>
-                {% endif %}
+                <th scope="col">ID исторической личности</th>
                 <th scope="col">Изображение</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Фамилия</th>
@@ -25,8 +22,9 @@
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Дата обновления</th>
                 <th scope="col">Подробнее</th>
-                {% if request.user.is_superuser %}
+                {% if request.user.is_superuser or request.user.is_staff%}
                     <th scope="col">Обновление</th>
+                {% elif request.user.is_superuser %}
                     <th scope="col">Удаление</th>
                 {% endif %}
             </tr>
@@ -45,31 +43,24 @@
                     <td>{{ person.surname.title }}</td>
                     <td>{{ person.patronymic.title }}</td>
                     <td>{{ person.birthday }} - {{ person.deathday }}</td>
-{##}
+                    {##}
                     <td><a href="{% url 'core:user_profile' person.author.pk %}"
                            role="button"> {{ person.author }}</a></td>
 
-
-{#                                 {% for person in publication.person.all %}#}
-{#                        <td><a href="{% url 'core:person_detail' person.pk %}" role="button"> {{ person }}</a></td>#}
-{#                    {% empty %}#}
-{#                        <td>Связанных личностей нет</td>#}
-{#                    {% endfor %}#}
-
-
-                   <td> {% for publication in person.persons.all %}
-                        <ul><li><a href="{% url 'core:publication_detail' publication.pk %}"
-                               role="button"> {{ publication }}</a></li></ul>
-                    {% empty %}
+                    <td>{% if person.persons.all %}
+                        {{ person.persons.all.count }}
+                    {% else %}
                         Связанных статей нет
-                    {% endfor %}</td>
+                    {% endif %}</td>
+
 
                     <td>{{ person.time_publish|date:"d-m-Y H:i:s" }}</td>
                     <td>{{ person.time_update|date:"d-m-Y H:i:s" }}</td>
                     <td><a href="{% url 'core:person_detail' person.pk %}" role="button">Подробнее</a></td>
-                    {% if request.user.is_superuser %}
+                    {% if request.user.is_superuser or request.user.is_staff %}
                         <td><a href="{% url 'core:person_update' person.pk %}" role="button">Обновление информации</a>
                         </td>
+                        {% elif request.user.is_superuser %}
                         <td><a href="{% url 'core:person_delete' person.pk %}" role="button">Удаление</a>
                         </td>
                     {% endif %}
@@ -82,5 +73,4 @@
         {% if request.user.is_superuser %}
             <a class="btn btn-primary" href="{% url 'core:person_create' %}" role="button">Добавление новой личности</a>
         {% endif %}
-    {% endif %}
 {% endblock %}

@@ -13,6 +13,15 @@
         <h3>ID: {{ person.pk }}</h3>
     {% endif %}
     <h3>Годы жизни: {{ person.birthday }} - {{ person.deathday }}</h3>
+        <h3>Связанные статьи:</h3>
+     {% for publication in person.persons.all %}
+         <ul>
+            <li><a href="{% url 'core:publication_detail' publication.pk %}"
+                   role="button"> {{ publication }}</a></li>
+        </ul>
+    {% empty %}
+        <h2>Связанных статей нет</h2>
+    {% endfor %}
     <h3>Биография:</h3>
     {{ person.bio|linebreaks }}
 {% endblock %}

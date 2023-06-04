@@ -16,10 +16,10 @@
                 <th scope="col">Аватарка</th>
                 <th scope="col">Никнейм</th>
                 <th scope="col">Роль</th>
-                {#                <th scope="col">Кол-во постов</th>#}
+                <th scope="col">Кол-во постов</th>
                 <th scope="col">Подробнее</th>
                 {% if request.user.is_superuser %}
-                    <th scope="col">Дать статус автора</th>
+                    <th scope="col">Сменить роль</th>
                     <th scope="col">БАН</th>
                 {% endif %}
             </tr>
@@ -42,16 +42,22 @@
                     {% else %}
                         <td>ReadOnly</td>
                     {% endif %}
-                    {#                    {% for publication in person.publication.all %}#}
-                    {#                        <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button"> {{ publication }}</a></td>#}
-                    {#                    {% empty %}#}
-                    {#                        <td>Связанных статей нет</td>#}
-                    {#                    {% endfor %}#}
+                    <td>{% if profile.publication_profiles.all %}
+                   {{profile.publication_profiles.all.count }}
+                    {% else %}
+                        Статей нет
+                    {% endif %}</td>
                     <td><a href="{% url 'core:user_profile' profile.pk %}" role="button">Подробнее</a></td>
                     {% if request.user.is_superuser %}
-                        <td><a href="{% url 'core:profiles' %}" role="button">Дать статус автора</a>
+
+                        {{profile.user.pk}}
+                        {{profile.user}}
+                        {{profile.nickname}}
+                        /
+
+                        <td><a href="{% url 'core:user_profile_change_role' profile.user.pk %}" role="button">Сменить роль</a>
                         </td>
-                        <td><a href="{% url 'core:profiles' %}" role="button">БАН</a>
+                        <td><a href="{% url 'core:user_profile_delete' profile.pk %}" role="button">БАН</a>
                         </td>
                     {% endif %}
                 </tr>

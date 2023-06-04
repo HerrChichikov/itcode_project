@@ -1,4 +1,6 @@
 import django_filters as filters
+from django import forms
+
 from core import models
 
 

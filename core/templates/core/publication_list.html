@@ -23,8 +23,9 @@
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Дата обновления</th>
                 <th scope="col">Подробнее</th>
-                {% if request.user.is_superuser %}
+                {% if request.user.is_superuser or request.user.is_staff %}
                     <th scope="col">Обновление</th>
+                {% elif request.user.is_superuser %}
                     <th scope="col">Удаление</th>
                 {% endif %}
             </tr>
@@ -53,9 +54,10 @@
                     <td>{{ publication.time_publish|date:"d-m-Y H:i:s" }}</td>
                     <td>{{ publication.time_update|date:"d-m-Y H:i:s" }}</td>
                     <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button">Подробнее</a></td>
-                    {% if request.user.is_superuser %}
+                    {% if request.user.is_superuser or request.user.is_staff %}
                         <td><a href="{% url 'core:publication_update' publication.pk %}" role="button">Обновление
                             информации</a></td>
+                    {% elif request.user.is_superuser %}
                         <td><a href="{% url 'core:publication_delete' publication.pk %}" role="button">Удаление</a>
                         </td>
                     {% endif %}
@@ -65,7 +67,7 @@
                 <h3>Список пуст</h3>
             {% endfor %}
         </table>
-        {% if request.user.is_superuser %}
+        {% if request.user.is_superuser or request.user.is_staff%}
             <a class="btn btn-primary" href="{% url 'core:publication_create' %}" role="button">Добавление новой
                 публикации</a>
         {% endif %}
