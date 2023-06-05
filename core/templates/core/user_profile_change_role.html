@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% if request.user.is_superuser %}
+    {% block title %} {{ title }} {% endblock %}
+    {% block content %}
+        <h1>Сменить роль {{ user.profile.nickname }}?</h1>
+        <form action="{% url 'core:user_profile_change_role' pk=user.pk %}" method="POST">
+            {% csrf_token %}
+
+            <ul>
+                <li><h3>Сделать автором</h3> {{ form.is_staff }}</li>
+
+                <li><h3>Сделать админом</h3> {{ form.is_superuser }}</li>
+            </ul>
+            <button class="btn btn-danger" type="submit">Сменить роль</button>
+            <a class="btn btn-secondary" href="{% url 'core:profiles' %}" role="button">Вернуться к профилям</a>
+        </form>
+    {% endblock %}
+{% endif %}

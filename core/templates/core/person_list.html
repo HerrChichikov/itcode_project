@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %} {{ title }} {% endblock %}<
 {% block content %}
-    {% if request.user.is_authenticated %}
         <h1>Список исторических личностей</h1>
         <form method="GET">
             {{ filter.form.as_p }}
@@ -11,19 +11,20 @@
         <table class="table">
             <thead>
             <tr>
-                {% if request.user.is_superuser %}
-                    <th scope="col">ID исторической личности</th>
-                {% endif %}
+                <th scope="col">ID исторической личности</th>
+                <th scope="col">Изображение</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Отчество</th>
                 <th scope="col">Годы жизни</th>
+                <th scope="col">Автор</th>
                 <th scope="col">Связанные статьи</th>
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Дата обновления</th>
                 <th scope="col">Подробнее</th>
-                {% if request.user.is_superuser %}
+                {% if request.user.is_superuser or request.user.is_staff%}
                     <th scope="col">Обновление</th>
+                {% elif request.user.is_superuser %}
                     <th scope="col">Удаление</th>
                 {% endif %}
             </tr>
@@ -31,24 +32,35 @@
             {% for person in persons %}
                 <tbody>
                 <tr>
-                    {% if request.user.is_superuser %}
-                        <td>{{ person.pk }}</td>
+                    <td>{{ person.pk }}</td>
+                    {% if person.photo.url != Null %}
+                        <td><img src="{{ person.photo.url }}" class="img-thumbnail" width="200" height="200">
+                        </td>
+                    {% else %}
+                        <td><img src="{% static 'core/images/findphoto.png' %}" width="200" height="200"></td>
                     {% endif %}
                     <td>{{ person.name.title }}</td>
                     <td>{{ person.surname.title }}</td>
                     <td>{{ person.patronymic.title }}</td>
                     <td>{{ person.birthday }} - {{ person.deathday }}</td>
-                    {% for publication in person.publication.all %}
-                        <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button"> {{ publication }}</a></td>
-                    {% empty %}
-                        <td>Связанных статей нет</td>
-                    {% endfor %}
+                    {##}
+                    <td><a href="{% url 'core:user_profile' person.author.pk %}"
+                           role="button"> {{ person.author }}</a></td>
+
+                    <td>{% if person.persons.all %}
+                        {{ person.persons.all.count }}
+                    {% else %}
+                        Связанных статей нет
+                    {% endif %}</td>
+
+
                     <td>{{ person.time_publish|date:"d-m-Y H:i:s" }}</td>
                     <td>{{ person.time_update|date:"d-m-Y H:i:s" }}</td>
                     <td><a href="{% url 'core:person_detail' person.pk %}" role="button">Подробнее</a></td>
-                    {% if request.user.is_superuser %}
+                    {% if request.user.is_superuser or request.user.is_staff %}
                         <td><a href="{% url 'core:person_update' person.pk %}" role="button">Обновление информации</a>
                         </td>
+                        {% elif request.user.is_superuser %}
                         <td><a href="{% url 'core:person_delete' person.pk %}" role="button">Удаление</a>
                         </td>
                     {% endif %}
@@ -61,5 +73,4 @@
         {% if request.user.is_superuser %}
             <a class="btn btn-primary" href="{% url 'core:person_create' %}" role="button">Добавление новой личности</a>
         {% endif %}
-    {% endif %}
 {% endblock %}

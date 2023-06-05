@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    <h1>Пользователь"{{ profile.nickname }}"</h1>
+
+    {% if profile.profile_photo.url != Null %}
+        <img src="{{ profile.profile_photo.url }} " class="img-thumbnail" width="300" height="300">
+    {% else %}
+        <img src="{% static 'core/images/emptyAvatar.large.jpg' %}" class="img-thumbnail" width="300" height="300">
+    {% endif %}
+
+
+
+
+    <h3>ID: {{ profile.pk }}</h3>
+    {% if profile.user.is_superuser %}
+        <h3>Права: Админ</h3>
+    {% elif profile.user.is_staff %}
+        <h3>Права: Автор</h3>
+    {% else %}
+        <h3>Права: ReadOnly</h3>
+    {% endif %}
+
+    <h3>Статус: {{ profile.status|linebreaks }}</h3>
+    <h3>Почта: {{ profile.user.email }}</h3>
+    <h3>Дата регистрации : {{ profile.user.date_joined }}</h3>
+
+    <h3>Написанные статьи:</h3>
+     {% for publication in profile.publication_profiles.all %}
+         <ul>
+            <li><a href="{% url 'core:publication_detail' publication.pk %}"
+                   role="button"> {{ publication }}</a></li>
+            Кол-во лайкой: {{ publication.likes.count }}
+        </ul>
+    {% empty %}
+        <h3>Статей не писал</h3>
+    {% endfor %}
+
+{% endblock %}
+

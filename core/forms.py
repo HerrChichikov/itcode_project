@@ -23,7 +23,8 @@ class PublicationForm(forms.ModelForm):
     class Meta:
         model = models.Publication
         fields = ('title', 'content', 'theme', 'category', 'person', 'year_start', 'year_end', 'photo',
-                  'is_published', )
+                  'is_published',)
+        # fields = "__all__"
 
 
 class PersonForm(forms.ModelForm):
@@ -55,22 +56,42 @@ class PersonForm(forms.ModelForm):
 
     class Meta:
         model = models.Person
-        fields = ('name', 'surname', 'patronymic', 'birthday', 'deathday', 'photo', 'bio', )
+        fields = ('name', 'surname', 'patronymic', 'birthday', 'deathday', 'photo', 'bio',)
 
 
 class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
 
 class UserUpdateForm(UserChangeForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     email = forms.EmailField(label='Почта', widget=forms.EmailInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('email', 'password',)
+
+
+class UserUpdateProfileForm(UserChangeForm):
+    nickname = forms.CharField(label='Никнейм', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    status = forms.CharField(label='Статус', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
+    class Meta:
+        model = models.Profile
+        fields = ('nickname', 'profile_photo', 'status',)
+
+
+class UserCreateProfileForm(forms.ModelForm):
+    nickname = forms.CharField(label='Никнейм', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    status = forms.CharField(label='Статус', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
+    class Meta:
+        model = models.Profile
+        fields = ('nickname', 'profile_photo', 'status',)
 
 
 class LoginUserForm(AuthenticationForm):

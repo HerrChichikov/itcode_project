@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+    <h1>Создание профиля: "{{ user.username }}"</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button class="btn btn-success" type="submit">Создать профиль</button>
+        <a class="btn btn-secondary" href="{% url 'core:main' %}" role="button">Вернуться на главную</a>
+    </form>
+{% endblock %}

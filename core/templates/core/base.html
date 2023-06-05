@@ -13,7 +13,14 @@
     <a class="btn btn-info" href="{% url 'core:main' %}" role="button">Главная</a>
     <a class="btn btn-secondary" href="{% url 'core:persons' %}" role="button">Исторические личности</a>
     <a class="btn btn-dark" href="{% url 'core:publications' %}" role="button">Публикации</a>
-    <a class="btn btn-warning" href="{% url 'core:user_update' %}" role="button">Профиль</a>
+    <a class="btn btn-warning" href="{% url 'core:user_update' %}" role="button">Настройки пользователя</a>
+    {% if user.profile.pk %}
+        <a class="btn btn-info" href="{% url 'core:user_profile_update' %}" role="button">Настройки профиля</a>
+        <a class="btn btn-success" href="{% url 'core:user_profile' pk=user.profile.pk %}" role="button">Мой профиль</a>
+        <a class="btn btn-warning" href="{% url 'core:profiles' %}" role="button">Поиск пользователей</a>
+    {% else %}
+        <a class="btn btn-info" href="{% url 'core:user_profile_create' %}" role="button">Создать профиль</a>
+    {% endif %}
 {% endif %}
 {% block content %}
 {% endblock %}
