@@ -25,4 +25,18 @@
     <h3>Год: {{ publication.year_start }} {{ publication.year_end }}</h3>
     <h3>Описание:</h3>
     {{ publication.content|linebreaks }}
+    <h3>Количество лайков: {{ number_of_likes }}</h3>
+{% if user.profile.pk %}
+  <form action="{% url 'core:publication_like' object.id %}" method="POST">
+    {% csrf_token %}
+    {% if post_is_liked %}
+    <button type="submit" name="publication_id" value="{{object.id}}" class="btn btn-danger">Разонравилось</button>
+    {% else %}
+    <button type="submit" name="publication_id" value="{{object.id}}" class="btn btn-info">Понравилось</button>
+    {% endif %}
+  </form>
+{% else %}
+    <h4>Необходимо иметь профиль, чтобы оставлять лайки</h4>
+{% endif %}
+
 {% endblock %}

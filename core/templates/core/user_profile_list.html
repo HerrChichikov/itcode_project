@@ -32,7 +32,7 @@
                         <td><img src="{{ profile.profile_photo.url }}" class="img-thumbnail" width="200" height="200">
                         </td>
                     {% else %}
-                        <td><img src="{% static 'core/images/emptyAvatar.large.jpg' %}" width="200" height="200"></td>
+                        <td><img src="{% static 'core/images/emptyAvatar.large.jpg' %}" class="img-thumbnail" width="200" height="200"></td>
                     {% endif %}
                     <td>{{ profile.nickname.title }}</td>
                     {% if profile.user.is_superuser %}

@@ -12,7 +12,7 @@
                 <li><h3>Сделать админом</h3> {{ form.is_superuser }}</li>
             </ul>
             <button class="btn btn-danger" type="submit">Сменить роль</button>
-            <a class="btn btn-secondary" href="{% url 'core:persons' %}" role="button">Вернуться к профилям</a>
+            <a class="btn btn-secondary" href="{% url 'core:profiles' %}" role="button">Вернуться к профилям</a>
         </form>
     {% endblock %}
 {% endif %}

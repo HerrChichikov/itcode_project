@@ -1,8 +1,9 @@
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from core import models, datatools, forms, filters
@@ -33,6 +34,27 @@ class PublicationDetail(TitleMixin, DetailView):
     template_name = 'core/publication_detail.html'
     context_object_name = 'publication'
     title = 'Полная публикация'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        likes_connected = get_object_or_404(models.Publication, id=self.kwargs['pk'])
+        liked = False
+        if likes_connected.likes.filter(id=self.request.user.id).exists():
+            liked = True
+        data['number_of_likes'] = likes_connected.number_of_likes()
+        data['post_is_liked'] = liked
+        return data
+
+
+def publication_like(request, pk):
+    post = get_object_or_404(models.Publication, id=request.POST.get('publication_id'))
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return HttpResponseRedirect(reverse('core:publication_detail', args=[str(pk)]))
 
 
 class PublicationCreate(TitleMixin, CreateView):
@@ -205,7 +227,7 @@ class ProfileDelete(TitleMixin, DeleteView):
 class ProfileChangeRole(TitleMixin, UpdateView):
     model = models.User
     template_name = 'core/user_profile_change_role.html'
-    fields = ('is_staff', 'is_superuser', )
+    fields = ('is_staff', 'is_superuser',)
     title = 'Смена прав'
     success_url = reverse_lazy('core:profiles')
 
