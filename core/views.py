@@ -85,6 +85,26 @@ class PublicationDelete(TitleMixin, DeleteView):
     success_url = reverse_lazy('core:publications')
 
 
+class PublicationCommentCreate(TitleMixin, CreateView):
+    template_name = 'core/publication_comment_create.html'
+    form_class = forms.PublicationCreatComment
+    title = 'Комментарий'
+    success_url = reverse_lazy('core:publications')
+
+    def form_valid(self, form):
+        form.instance.profile = self.request.user.profile
+        form.instance.publication_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+
+class PublicationCommentDelete(TitleMixin, DeleteView):
+    model = models.Comment
+    template_name = 'core/publication_comment_delete.html'
+    fields = "__all__"
+    title = 'Удаление комментария'
+    success_url = reverse_lazy('core:publications')
+
+
 class PersonList(TitleMixin, ListView):
     model = models.Person
     template_name = 'core/person_list.html'

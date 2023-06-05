@@ -1,9 +1,9 @@
 from django.contrib import admin
-from core.models import Categories, Themes, Person, Publication, Profile
+from core import models
 
-admin.site.register(Categories)
-admin.site.register(Themes)
-admin.site.register(Person)
-admin.site.register(Publication)
-admin.site.register(Profile)
-
+admin.site.register(models.Categories)
+admin.site.register(models.Themes)
+admin.site.register(models.Person)
+admin.site.register(models.Publication)
+admin.site.register(models.Profile)
+admin.site.register(models.Comment)

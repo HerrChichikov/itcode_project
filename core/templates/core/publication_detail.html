@@ -26,17 +26,51 @@
     <h3>Описание:</h3>
     {{ publication.content|linebreaks }}
     <h3>Количество лайков: {{ number_of_likes }}</h3>
-{% if user.profile.pk %}
-  <form action="{% url 'core:publication_like' object.id %}" method="POST">
-    {% csrf_token %}
-    {% if post_is_liked %}
-    <button type="submit" name="publication_id" value="{{object.id}}" class="btn btn-danger">Разонравилось</button>
+    {% if user.profile.pk %}
+        <form action="{% url 'core:publication_like' publication.pk %}" method="POST">
+            {% csrf_token %}
+            {% if post_is_liked %}
+                <button type="submit" name="publication_id" value="{{ publication.id }}" class="btn btn-danger">
+                    Разонравилось
+                </button>
+            {% else %}
+                <button type="submit" name="publication_id" value="{{ publication.id }}" class="btn btn-info">
+                    Понравилось
+                </button>
+            {% endif %}
+        </form>
     {% else %}
-    <button type="submit" name="publication_id" value="{{object.id}}" class="btn btn-info">Понравилось</button>
+        <h4>Необходимо иметь профиль, чтобы оставлять лайки</h4>
     {% endif %}
-  </form>
-{% else %}
-    <h4>Необходимо иметь профиль, чтобы оставлять лайки</h4>
-{% endif %}
+
+
+    {% if user.profile.pk %}
+        <a href="{% url 'core:publication_comment' publication.pk %}"> Прокомментировать </a>
+    {% else %}
+        <h4>Необходимо иметь профиль, чтобы оставлять комментарии</h4>
+    {% endif %}
+
+    <h4>Кол-во комментариев: {{ publication.comment_publications.all.count }}</h4>
+
+    {% for comment in publication.comment_publications.all %}
+        <ul>
+            # {{ comment.pk }}
+            <br>
+            {{ comment.profile }} - {{ comment.date }}
+            <br>
+            {% if comment.parent %}
+                Ответ комментарию: {{ comment.parent }}
+            {% endif %}
+
+            {% if comment.image %}
+                <br> <img src="{{ comment.image.url }}" width="150" height="150"> <br>
+            {% endif %}
+            {{ comment.body }}
+        </ul>
+        <a href="{% url 'core:publication_comment_delete' comment.pk %}" role="button">Удалить комментарий</a>
+    {% empty %}
+        <h4>Комментариев нет</h4>
+    {% endfor %}
+
 
 {% endblock %}
