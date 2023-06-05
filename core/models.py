@@ -1,5 +1,8 @@
+
 from django.contrib.auth.models import User
 from django.db import models
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 
 
 class Categories(models.Model):
@@ -92,3 +95,25 @@ class Profile(models.Model):
         verbose_name = "Профиль"
     # def get_absolute_url(self):
     #     return reverse('#', kwargs = {})
+
+
+class Comment(MPTTModel):
+    publication = models.ForeignKey(Publication, related_name="comment_publications", on_delete=models.CASCADE,
+                                    verbose_name="Публикация комментария", )
+    profile = models.ForeignKey(Profile, related_name="comment_profile", on_delete=models.CASCADE,
+                                verbose_name="Комментатор", )
+    body = models.TextField(verbose_name='Тело комментария', )
+    image = models.ImageField(upload_to='photos/comments/%Y/%m/%d/', verbose_name='Фото комментария', blank=True, )
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Время и дата комментария')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children', verbose_name="parent comment", )
+
+    class MPTTMeta:
+        level_attr = "Ответ комментарию #"
+        order_insertion_by = ['body']
+
+    def __str__(self):
+        return f"{self.profile.nickname} #{self.id}"
+
+    class Meta:
+        ordering = ["date"]
+        verbose_name = "Комментарий"

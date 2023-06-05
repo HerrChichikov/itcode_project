@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-{% if request.user.is_superuser or request.user.is_staff%}
+{% if request.user.is_superuser or request.user.is_staff %}
     {% block title %} {{ title }} {% endblock %}
     {% block content %}
         <h1>Обновление публикации "{{ publication.title }}"</h1>

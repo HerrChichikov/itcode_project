@@ -94,6 +94,13 @@ class UserCreateProfileForm(forms.ModelForm):
         fields = ('nickname', 'profile_photo', 'status',)
 
 
+class PublicationCreatComment(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ('body', 'image', 'parent', )
+        # fields = "__all__"
+
+
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))

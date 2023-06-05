@@ -67,7 +67,7 @@
                 <h3>Список пуст</h3>
             {% endfor %}
         </table>
-        {% if request.user.is_superuser or request.user.is_staff%}
+        {% if request.user.is_superuser or request.user.is_staff %}
             <a class="btn btn-primary" href="{% url 'core:publication_create' %}" role="button">Добавление новой
                 публикации</a>
         {% endif %}

@@ -12,6 +12,8 @@ urlpatterns = [
     path('publication_update/<int:pk>', views.PublicationUpdate.as_view(), name='publication_update'),
     path('publication_delete/<int:pk>', views.PublicationDelete.as_view(), name='publication_delete'),
     path('publication_like/<int:pk>', views.publication_like, name="publication_like"),
+    path('publication_comment/<int:pk>', views.PublicationCommentCreate.as_view(), name="publication_comment"),
+    path('publication_comment_delete/<int:pk>', views.PublicationCommentDelete.as_view(), name='publication_comment_delete'),
 
     path('persons/', views.PersonList.as_view(), name='persons'),
     path('person_detail/<int:pk>', views.PersonDetail.as_view(), name='person_detail'),
