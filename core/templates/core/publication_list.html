@@ -25,7 +25,8 @@
                 <th scope="col">Подробнее</th>
                 {% if request.user.is_superuser or request.user.is_staff %}
                     <th scope="col">Обновление</th>
-                {% elif request.user.is_superuser %}
+                {% endif %}
+                {% if request.user.is_superuser %}
                     <th scope="col">Удаление</th>
                 {% endif %}
             </tr>
@@ -54,10 +55,13 @@
                     <td>{{ publication.time_publish|date:"d-m-Y H:i:s" }}</td>
                     <td>{{ publication.time_update|date:"d-m-Y H:i:s" }}</td>
                     <td><a href="{% url 'core:publication_detail' publication.pk %}" role="button">Подробнее</a></td>
-                    {% if request.user.is_superuser or request.user.is_staff %}
+                    {% if request.user.profile.pk == publication.author.pk or request.user.is_superuser%}
                         <td><a href="{% url 'core:publication_update' publication.pk %}" role="button">Обновление
                             информации</a></td>
-                    {% elif request.user.is_superuser %}
+                    {% elif request.user.is_staff  %}
+                        <td>Вы не автор данной публикации</td>
+                    {% endif %}
+                    {% if request.user.is_superuser %}
                         <td><a href="{% url 'core:publication_delete' publication.pk %}" role="button">Удаление</a>
                         </td>
                     {% endif %}
