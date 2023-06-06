@@ -18,6 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/media/photos/2023/05/30" />
       <excludeFolder url="file://$MODULE_DIR$/media/photos/2023/06" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/media" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (PycharmProjects3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
