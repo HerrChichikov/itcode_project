@@ -1,6 +1,7 @@
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
@@ -77,8 +78,9 @@ class Publication(models.Model):
     class Meta:
         ordering = ["-time_publish"]
         verbose_name = "Публикация"
-    # def get_absolute_url(self):
-    #     return reverse('#', kwargs = {})
+
+    def get_absolute_url(self):
+         return reverse('post', kwargs = {'core:publication_detail': self.pk})
 
 
 class Profile(models.Model):

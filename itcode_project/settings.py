@@ -30,7 +30,7 @@ SECRET_KEY = config['security']['SECRET_KEY_DJANGO_SETTINGS']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
