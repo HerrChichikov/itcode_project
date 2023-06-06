@@ -1,4 +1,6 @@
-.idea/
+.idea
 config.ini
-venv/
-media/
+/venv
+media
+.coverage
+/htmlcov
