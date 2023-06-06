@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
+    <br>
+    <br>
+    <a class="btn btn-secondary" onclick="history.back()" role="button">Назад</a>
     <h1>"{{ publication.title }}"</h1>
     {% if publication.photo.url != Null %}
         <img src="{{ publication.photo.url }}" width="400" height="400">
@@ -56,18 +59,28 @@
         <ul>
             # {{ comment.pk }}
             <br>
-            {{ comment.profile }} - {{ comment.date }}
+
+            {% if comment.profile.profile_photo != Null %}
+                <img src="{{ comment.profile.profile_photo.url }}" class="img-thumbnail" width="100" height="100">
+            {% else %}
+                <img src="{% static 'core/images/emptyAvatar.large.jpg' %}" class="img-thumbnail" width="100" height="100">
+            {% endif %}
             <br>
+            <a href="{% url 'core:user_profile' comment.profile.pk %}"> {{ comment.profile }} </a> - {{ comment.date }}
+
             {% if comment.parent %}
-                Ответ комментарию: {{ comment.parent }}
+                <br> Ответ комментарию: {{ comment.parent }}
             {% endif %}
 
             {% if comment.image %}
-                <br> <img src="{{ comment.image.url }}" width="150" height="150"> <br>
+                <br> <img src="{{ comment.image.url }}" width="150" height="150">
             {% endif %}
+            <br>
             {{ comment.body }}
         </ul>
+        {% if request.user.is_superuser %}
         <a href="{% url 'core:publication_comment_delete' comment.pk %}" role="button">Удалить комментарий</a>
+        {% endif %}
     {% empty %}
         <h4>Комментариев нет</h4>
     {% endfor %}
